@@ -1,0 +1,5 @@
+ALTER TABLE doctors ADD COLUMN phone VARCHAR(20);
+
+UPDATE doctors SET phone = '0000-0000' WHERE phone IS NULL;
+
+ALTER TABLE doctors ALTER COLUMN phone SET NOT NULL;
