@@ -1,4 +1,4 @@
-package br.com.med.cleanMed.infra;
+package br.com.med.cleanMed.infra.exception;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
