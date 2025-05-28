@@ -8,4 +8,7 @@ public record DataDetailsAppointmentDTO(
         Long idPatient,
         LocalDateTime dateTime
 ) {
+    public DataDetailsAppointmentDTO(Appointment appointment) {
+        this(appointment.getId(), appointment.getDoctor().getId(), appointment.getPatient().getId(), appointment.getDateTime());
+    }
 }

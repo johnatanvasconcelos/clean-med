@@ -1,6 +1,6 @@
 package br.com.med.cleanMed.domain.appointment.validations;
 
-import br.com.med.cleanMed.domain.appointment.DataScheduleAppointmentDTO;
+import br.com.med.cleanMed.domain.appointment.scheduling.DataScheduleAppointmentDTO;
 import br.com.med.cleanMed.infra.exception.AppointmentValidationException;
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Component
-public class AdvanceTimeValidator implements ScheduleAppointmentValidator{
+public class AdvanceSchedulingTimeValidator implements ScheduleAppointmentValidator{
 
     public void toValidate(DataScheduleAppointmentDTO dataDTO) {
         var dateAppointment = dataDTO.dateTime();

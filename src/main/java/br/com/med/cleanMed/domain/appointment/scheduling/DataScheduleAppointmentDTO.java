@@ -1,4 +1,4 @@
-package br.com.med.cleanMed.domain.appointment;
+package br.com.med.cleanMed.domain.appointment.scheduling;
 
 import br.com.med.cleanMed.domain.doctor.Specialty;
 import jakarta.validation.constraints.Future;

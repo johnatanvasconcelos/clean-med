@@ -1,5 +1,8 @@
-package br.com.med.cleanMed.domain.appointment;
+package br.com.med.cleanMed.domain.appointment.scheduling;
 
+import br.com.med.cleanMed.domain.appointment.*;
+import br.com.med.cleanMed.domain.appointment.cancellation.AppointmentCancellationValidator;
+import br.com.med.cleanMed.domain.appointment.cancellation.DataCancellationAppointmentDTO;
 import br.com.med.cleanMed.domain.appointment.validations.ScheduleAppointmentValidator;
 import br.com.med.cleanMed.domain.doctor.Doctor;
 import br.com.med.cleanMed.domain.doctor.DoctorRepository;
@@ -11,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AppointmentSchedule {
+public class AppointmentScheduling {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
@@ -25,7 +28,10 @@ public class AppointmentSchedule {
     @Autowired
     private List<ScheduleAppointmentValidator> validators;
 
-    public void toSchedule(DataScheduleAppointmentDTO dataSchedule){
+    @Autowired
+    private List<AppointmentCancellationValidator> cancellationValidators;
+
+    public DataDetailsAppointmentDTO toSchedule(DataScheduleAppointmentDTO dataSchedule){
         if(!patientRepository.existsById(dataSchedule.patientId())){
             throw new AppointmentValidationException("Id do paciente informado não existe");
         }
@@ -38,9 +44,16 @@ public class AppointmentSchedule {
 
         var patient = patientRepository.getReferenceById(dataSchedule.patientId());
         var doctor = choiceDoctor(dataSchedule);
-        var appointment = new Appointment(null, doctor, patient, dataSchedule.dateTime());
+
+        if (doctor == null) {
+            throw new AppointmentValidationException("Não existe médico disponível nessa data");
+        }
+
+        var appointment = new Appointment(null, doctor, patient, dataSchedule.dateTime(), AppointmentStatus.SCHEDULED, null);
 
         appointmentRepository.save(appointment);
+
+        return new DataDetailsAppointmentDTO(appointment);
     }
 
     private Doctor choiceDoctor(DataScheduleAppointmentDTO data){
@@ -53,7 +66,17 @@ public class AppointmentSchedule {
         }
 
         return doctorRepository.choiceRandomAvailableDoctorOnTheDate(data.specialty(), data.dateTime());
+    }
 
+    public void toCancel(DataCancellationAppointmentDTO dataDTO) {
+        if (!appointmentRepository.existsById(dataDTO.idAppointment())) {
+            throw new AppointmentValidationException("Id da consulta informado não existe!");
+        }
+
+        cancellationValidators.forEach(v -> v.toValidate(dataDTO));
+
+        var appointment = appointmentRepository.getReferenceById(dataDTO.idAppointment());
+        appointment.toCancel(dataDTO.reason());
     }
 
 }

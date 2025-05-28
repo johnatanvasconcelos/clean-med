@@ -17,16 +17,16 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
     @Query("""
             select d from Doctor d
             where
-            d.active = true
-            and
-            d.specialty = :specialty
-            and
-            d.id not in(
-                select a.doctor.id from Appointment a
-                where
-                a.dateTime = :dateTime
-            )
-            order by rand()
+                d.active = true
+                and
+                d.specialty = :specialty
+                and
+                d.id not in(
+                    select a.doctor.id from Appointment a
+                    where
+                    a.dateTime = :dateTime
+                )
+            order by function('RANDOM')
             limit 1
             """)
     Doctor choiceRandomAvailableDoctorOnTheDate(Specialty specialty, @NotNull @Future LocalDateTime dateTime);
@@ -35,7 +35,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             select d.active
             from Doctor d
             where
-            d.id = :id
+            d.id = :doctorId
             """)
     Boolean findActiveById(Long doctorId);
 }

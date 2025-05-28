@@ -1,7 +1,7 @@
 package br.com.med.cleanMed.domain.appointment.validations;
 
 import br.com.med.cleanMed.domain.appointment.AppointmentRepository;
-import br.com.med.cleanMed.domain.appointment.DataScheduleAppointmentDTO;
+import br.com.med.cleanMed.domain.appointment.scheduling.DataScheduleAppointmentDTO;
 import br.com.med.cleanMed.infra.exception.AppointmentValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
