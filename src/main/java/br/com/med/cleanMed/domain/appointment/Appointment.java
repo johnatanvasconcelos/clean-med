@@ -47,6 +47,12 @@ public class Appointment {
     public void toCancel(CancellationReason reason) {
         this.cancellationReason = reason;
         this.appointmentStatus = AppointmentStatus.CANCELED;
+    }
 
+    public void updateStatus(AppointmentStatus newStatus) {
+        if(this.appointmentStatus == AppointmentStatus.CANCELED){
+            throw new IllegalStateException("Não é possível atualizar o status de uma consulta cancelada.");
+        }
+        this.appointmentStatus = newStatus;
     }
 }

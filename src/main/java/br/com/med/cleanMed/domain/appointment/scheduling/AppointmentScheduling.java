@@ -3,14 +3,17 @@ package br.com.med.cleanMed.domain.appointment.scheduling;
 import br.com.med.cleanMed.domain.appointment.*;
 import br.com.med.cleanMed.domain.appointment.cancellation.AppointmentCancellationValidator;
 import br.com.med.cleanMed.domain.appointment.cancellation.DataCancellationAppointmentDTO;
+import br.com.med.cleanMed.domain.appointment.updating.AppointmentUpdateStatusDTO;
 import br.com.med.cleanMed.domain.appointment.validations.ScheduleAppointmentValidator;
 import br.com.med.cleanMed.domain.doctor.Doctor;
 import br.com.med.cleanMed.domain.doctor.DoctorRepository;
 import br.com.med.cleanMed.domain.patient.PatientRepository;
 import br.com.med.cleanMed.infra.exception.AppointmentValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -77,6 +80,18 @@ public class AppointmentScheduling {
 
         var appointment = appointmentRepository.getReferenceById(dataDTO.idAppointment());
         appointment.toCancel(dataDTO.reason());
+    }
+
+    public DataResponseAppointmentDTO updateStatus(AppointmentUpdateStatusDTO dto){
+        var appointment = appointmentRepository.findById(dto.id())
+                .orElseThrow(() -> new AppointmentValidationException("Consula não encontrada"));
+
+        if (appointment.getDateTime().isAfter(LocalDateTime.now())) {
+            throw new AppointmentValidationException("Não é possível atualizar o status de uma consulta que ainda não ocorreu.");
+        }
+
+        appointment.updateStatus(dto.newStatus());
+        return new DataResponseAppointmentDTO(appointment);
     }
 
 }
