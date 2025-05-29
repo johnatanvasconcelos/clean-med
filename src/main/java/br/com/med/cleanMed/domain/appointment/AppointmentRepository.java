@@ -9,11 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
-    boolean existsByDoctorIdAndDateTime(Long doctorId, LocalDateTime dateTime);
+    boolean existsByDoctorIdAndDateTimeAndCancellationReasonIsNull(Long doctorId, LocalDateTime dateTime);
 
     boolean existsByPatientIdAndDateTimeBetween(Long patientId, LocalDateTime firstSchedule, LocalDateTime lastSchedule);
-
-    boolean existsByDoctorIdAndDateTimeAndCancellationReasonIsNull(Long idDoctor, LocalDateTime dateTime);
 
     Page<Appointment> findByAppointmentStatusAndDateTimeBefore(AppointmentStatus appointmentStatus, LocalDateTime dateTime, Pageable pageable);
 }

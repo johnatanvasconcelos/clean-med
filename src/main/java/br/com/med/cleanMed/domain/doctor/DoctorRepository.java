@@ -25,7 +25,9 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
                     select a.doctor.id from Appointment a
                     where
                     a.dateTime = :dateTime
-                )
+            and
+                    a.cancellationReason is null
+            )
             order by function('RANDOM')
             limit 1
             """)

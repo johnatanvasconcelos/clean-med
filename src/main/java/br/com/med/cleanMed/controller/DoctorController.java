@@ -6,6 +6,7 @@ import br.com.med.cleanMed.domain.doctor.DoctorResponseDTO;
 import br.com.med.cleanMed.domain.doctor.DoctorUpdateDTO;
 import br.com.med.cleanMed.domain.doctor.Doctor;
 import br.com.med.cleanMed.domain.doctor.DoctorRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/doctors")
+@SecurityRequirement(name = "bearer-key")
 public class DoctorController {
 
     @Autowired

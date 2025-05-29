@@ -9,6 +9,7 @@ import br.com.med.cleanMed.domain.appointment.scheduling.AppointmentScheduling;
 import br.com.med.cleanMed.domain.appointment.scheduling.DataScheduleAppointmentDTO;
 
 import br.com.med.cleanMed.domain.appointment.updating.AppointmentUpdateStatusDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/appointments")
+@SecurityRequirement(name = "bearer-key")
 public class AppointmentController {
 
     @Autowired

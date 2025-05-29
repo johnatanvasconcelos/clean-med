@@ -13,7 +13,7 @@ public class DoctorScheduleConflictValidator implements ScheduleAppointmentValid
     private AppointmentRepository repository;
 
     public void toValidate(DataScheduleAppointmentDTO dataDTO){
-        var doctorHaveAnotherAppointmentInThisTime = repository.existsByDoctorIdAndDateTime(dataDTO.doctorId(), dataDTO.dateTime());
+        var doctorHaveAnotherAppointmentInThisTime = repository.existsByDoctorIdAndDateTimeAndCancellationReasonIsNull(dataDTO.doctorId(), dataDTO.dateTime());
         if(doctorHaveAnotherAppointmentInThisTime){
             throw new AppointmentValidationException("Médico já possui outro agendamento nesse horário");
         }
